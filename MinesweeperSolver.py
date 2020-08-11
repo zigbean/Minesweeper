@@ -362,6 +362,7 @@ def det_known_cells(board):
 
 
 # %%
+# unfinished algorithm
 def find_known_cell_two(board):
     dim_x = board.shape[0]
     dim_y = board.shape[1]
@@ -419,18 +420,23 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver import ActionChains
 import time 
 import datetime
+import os
+import sys
 
-# 'beginner', 'intermediate' or 'expert'
-input_difficulty = input('please enter the difficulty: ')
-automatic_reset = input('automatically reset if program loses? please enter True or False: ')
+input_difficulty = input('Please enter the difficulty (Beginner,Intermediate,Expert): ')
+if input_difficulty not in ['Beginner','Intermediate','Expert']:
+    sys.exit('Error: Not a valid difficulty.')
+automatic_reset = input('Automatically reset if program loses? Please enter True or False: ')
 if automatic_reset == 'True':
     automatic_reset = True
-else:
+elif automatic_reset == 'False':
     automatic_reset = False 
-print('difficulty: ' + input_difficulty)
+else:
+    sys.exit('Error: Please enter True or False')
+print('Difficulty: ' + input_difficulty)
 
 # path changes depending on device
-browser = webdriver.Chrome(executable_path = 'C:/Projects/Minesweeper/chromedriver')
+browser = webdriver.Chrome(executable_path = os.path.dirname(os.path.abspath(__file__)) + '\\chromedriver.exe')
 browser.get('http://www.freeminesweeper.org/minecore.html') 
 
 # switch to new window
@@ -547,12 +553,12 @@ while state != 6:
         actionChains.click(element).perform()
 
     if state == 0:
-        print('state = 0, could not determine next move')
+        print('State = 0, could not determine next move')
         break
 
     if state == 6:
-        print('board complete')
-        answer = input('restart the board? enter yes or no: ')
+        print('Board complete')
+        answer = input('Restart the board? Enter yes or no: ')
         if answer == 'yes':
             reset = browser.find_element_by_xpath('//*[@id="divBoard"]/table/tbody/tr/td/a[2]/img')
             reset.click()
@@ -562,12 +568,12 @@ while state != 6:
 
     if state == 7:
         if automatic_reset:
-            print('guess failed, resetting board')
+            print('Guess failed, resetting board')
             reset = browser.find_element_by_xpath('//*[@id="divBoard"]/table/tbody/tr/td/a[2]/img')
             reset.click()
         else:
-            print('guess failed, program loses')
-            answer = input('restart the board? enter yes or no: ')
+            print('Guess failed, program loses')
+            answer = input('Restart the board? enter yes or no: ')
             if answer == 'yes':
                 reset = browser.find_element_by_xpath('//*[@id="divBoard"]/table/tbody/tr/td/a[2]/img')
                 reset.click()
@@ -577,3 +583,6 @@ while state != 6:
 
     timestamp_3 = datetime.datetime.now()
     #print('time taken to determine state: ' + str((timestamp_3 - timestamp_2).total_seconds()) + ' seconds')
+
+
+# %%
