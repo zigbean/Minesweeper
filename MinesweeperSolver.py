@@ -1,4 +1,4 @@
-# must open file through Anaconda Navigator
+# converted from a Jupyter notebook
 
 # %%
 # determine state of the board
